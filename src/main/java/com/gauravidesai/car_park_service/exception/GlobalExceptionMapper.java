@@ -5,6 +5,7 @@ import com.gauravidesai.car_park_service.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -67,4 +68,17 @@ public class GlobalExceptionMapper {
                         LocalDateTime.now()
                 ));
     }
+
+    /**
+     * Handles validation errors triggered by invalid request payloads.
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex,
+                                                          HttpServletRequest request) {
+        String error = ex.getBindingResult().getFieldError().getDefaultMessage();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(error, request.getRequestURI(), LocalDateTime.now()));
+    }
+
 }
