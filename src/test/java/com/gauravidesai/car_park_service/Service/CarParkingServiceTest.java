@@ -115,12 +115,12 @@ class CarParkingServiceTest {
 
     @Test
     void shouldReuseFreedSpaceFirst() {
-        ParkingRecord r1 = carParkingService.parkVehicle("A", 1);
-        carParkingService.parkVehicle("B", 1);
+        ParkingRecord r1 = carParkingService.parkVehicle("AB1CD2", 1);
+        carParkingService.parkVehicle("EF3GH4", 1);
 
-        carParkingService.exitVehicle("A");
+        carParkingService.exitVehicle("AB1CD2");
 
-        ParkingRecord r3 = carParkingService.parkVehicle("C", 1);
+        ParkingRecord r3 = carParkingService.parkVehicle("XX1ZZ5", 1);
 
         assertEquals(r1.spaceNumber(), r3.spaceNumber());
     }
